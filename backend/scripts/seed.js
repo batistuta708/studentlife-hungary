@@ -301,25 +301,61 @@ async function seed() {
   }
 
   // --- Accommodation ---
+ // --- Accommodation ---
+  // Illustrative example listings, not real available properties — contact routes
+  // through the site's own address rather than an invented landlord's phone number,
+  // so nothing here could be mistaken for a real rentable unit with a working contact.
   const accommodationDefs = [
     {
       title: "Cozy Studio near ELTE Campus",
-      description: "Fully furnished studio apartment, 10 minutes walk from ELTE main building.",
+      description:
+        "A fully furnished studio apartment a short walk from ELTE's main building, ideal for a single student who wants privacy without a long commute. Includes a kitchenette, private bathroom, and a small work desk — the kind of setup that works well if you're prioritizing quiet study time over shared common areas.",
       type: "studio",
       location: { address: "Váci út 1", city: "Budapest", nearestUniversity: universities[0]._id },
-      price: { amount: 180000, currency: "HUF" },
-      capacity: { availableRooms: 1 },
+      price: { amount: 180000, currency: "HUF", utilitiesIncluded: false },
+      capacity: { availableRooms: 1, roommates: 0 },
+      amenities: ["WiFi", "Furnished", "Private bathroom", "Kitchenette"],
       images: [{ url: "https://res.cloudinary.com/demo/image/upload/sample.jpg", alt: "Studio apartment interior" }],
+      contact: { email: "listings@studentlifehungary.com" },
       status: "approved",
     },
     {
       title: "Shared Apartment — 1 Room Available",
-      description: "Room in a 3-bedroom shared apartment, all utilities included.",
+      description:
+        "One room available in a 3-bedroom shared apartment close to the University of Szeged campus. All utilities included in the price — a straightforward option if you'd rather not deal with separate bills. The other two rooms are occupied by current students, so you'd be moving into an already-established shared household rather than starting cold with strangers.",
       type: "shared-apartment",
       location: { address: "Rákóczi út 15", city: "Szeged", nearestUniversity: universities[1]._id },
       price: { amount: 95000, currency: "HUF", utilitiesIncluded: true },
       capacity: { availableRooms: 1, roommates: 2 },
+      amenities: ["WiFi", "Washing machine", "Shared kitchen"],
       images: [{ url: "https://res.cloudinary.com/demo/image/upload/sample.jpg", alt: "Shared apartment living room" }],
+      contact: { email: "listings@studentlifehungary.com" },
+      status: "approved",
+    },
+    {
+      title: "University Dormitory Room — Debrecen",
+      description:
+        "A standard dormitory room on the University of Debrecen campus, the most budget-friendly option for students prioritizing low cost and proximity to lectures over privacy. Shared bathroom and kitchen facilities on each floor. Dormitory placement is often arranged directly through your university's international office rather than independently — worth checking there first.",
+      type: "dormitory",
+      location: { address: "Egyetem tér 1", city: "Debrecen", nearestUniversity: universities[2]._id },
+      price: { amount: 55000, currency: "HUF", utilitiesIncluded: true },
+      capacity: { availableRooms: 2, roommates: 1 },
+      amenities: ["WiFi", "Shared kitchen", "Laundry facilities"],
+      images: [{ url: "https://res.cloudinary.com/demo/image/upload/sample.jpg", alt: "Dormitory room" }],
+      contact: { email: "listings@studentlifehungary.com" },
+      status: "approved",
+    },
+    {
+      title: "Private Apartment Near University of Pécs",
+      description:
+        "A one-bedroom private apartment a short walk from the University of Pécs, best suited to a student who values independence and is comfortable with a higher rent in exchange for not sharing space. Recently renovated, unfurnished — a good fit if you're staying multiple years and want to set the place up yourself.",
+      type: "private-apartment",
+      location: { address: "Rákóczi út 42", city: "Pécs", nearestUniversity: universities[6]._id },
+      price: { amount: 145000, currency: "HUF", utilitiesIncluded: false },
+      capacity: { availableRooms: 1, roommates: 0 },
+      amenities: ["WiFi", "Balcony", "Recently renovated"],
+      images: [{ url: "https://res.cloudinary.com/demo/image/upload/sample.jpg", alt: "Private apartment" }],
+      contact: { email: "listings@studentlifehungary.com" },
       status: "approved",
     },
   ];
