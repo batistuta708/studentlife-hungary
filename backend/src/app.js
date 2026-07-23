@@ -15,6 +15,12 @@ const logger = require("./config/logger");
 
 const app = express();
 
+// Render (and most PaaS platforms) sit the app behind a reverse proxy, which sets
+// X-Forwarded-For to the visitor's real IP. Express doesn't trust that header by
+// default, but express-rate-limit needs it to correctly identify client IPs, and
+// throws instead of silently misbehaving when it's missing this setting.
+app.set("trust proxy", 1);
+
 // --- Security headers ---
 app.use(helmet());
 
