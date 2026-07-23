@@ -76,7 +76,7 @@ export default function ManageAccommodationPage() {
         description,
         location: { address, city },
         price: { amount: price, currency: "HUF", period: "month", utilitiesIncluded: false },
-        capacity: { availableRooms },
+       capacity: { availableRooms, roommates: 0 },
         amenities: amenities.split(",").map((a) => a.trim()).filter(Boolean),
         images: [{ url: image.url, alt: title }],
       });
