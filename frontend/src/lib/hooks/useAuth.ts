@@ -59,7 +59,7 @@ export function useAuth() {
     router.push(redirectTo);
   };
 
-  const logout = async (redirectTo = "/") => {
+  const logout = async () => {
     await authApi.logout().catch(() => null);
     clearSession();
     router.push("/");

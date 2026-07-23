@@ -15,10 +15,16 @@ const logger = require("./config/logger");
 
 const app = express();
 
-// Render (and most PaaS platforms) sit the app behind a reverse proxy, which sets
-// X-Forwarded-For to the visitor's real IP. Express doesn't trust that header by
-// default, but express-rate-limit needs it to correctly identify client IPs, and
-// throws instead of silently misbehaving when it's missing this setting.
+// Render (and most PaaS platforms — Heroku, Railway, etc.) sit the app behind a
+// reverse proxy, which sets X-Forwarded-For to the visitor's real IP. Express doesn't
+// trust that header by default (a reasonable default — a client could forge it
+// otherwise), but express-rate-limit needs a real client IP to key its per-IP limits
+// correctly, and throws rather than silently misbehaving when it sees the header
+// without this being set. `true` trusts the whole forwarded chain rather than just
+// one hop — Render's infrastructure has more than one proxy hop in front of the app
+// (trusting only 1 hop still crashed in production), and since nothing can reach this
+// app except through Render's own proxy layer, there's no spoofing risk in trusting
+// the full chain here.
 app.set("trust proxy", true);
 
 // --- Security headers ---

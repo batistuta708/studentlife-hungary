@@ -11,6 +11,7 @@
  */
 require("dotenv").config();
 const mongoose = require("mongoose");
+const crypto = require("crypto");
 const {
   User,
   Category,
@@ -22,6 +23,14 @@ const {
 } = require("../src/models");
 
 const RESET = process.argv.includes("--reset");
+
+// A random password each run, rather than a static hardcoded default — a fixed
+// well-known "ChangeMe123!"-style password is exactly the kind of thing that ends up
+// documented somewhere public and then never actually gets changed on every deployment
+// that runs this script.
+function generateTempPassword() {
+  return crypto.randomBytes(9).toString("base64url"); // 12 chars, URL-safe, no ambiguous symbols
+}
 
 async function seed() {
   await mongoose.connect(process.env.MONGODB_URI);
@@ -37,25 +46,29 @@ async function seed() {
   // --- Admin + editor accounts ---
   let admin = await User.findOne({ email: "admin@studentlifehungary.com" });
   if (!admin) {
+    const tempPassword = generateTempPassword();
     admin = await User.create({
       name: "Site Admin",
       email: "admin@studentlifehungary.com",
-      password: "ChangeMe123!",
+      password: tempPassword,
       role: "admin",
       isEmailVerified: true,
     });
-    console.log("Created admin user: admin@studentlifehungary.com / ChangeMe123! — change this password immediately.");
+    console.log(`Created admin user: admin@studentlifehungary.com / ${tempPassword}`);
+    console.log("This password is shown only once — save it now, then change it after logging in.");
   }
 
   let editor = await User.findOne({ email: "editor@studentlifehungary.com" });
   if (!editor) {
+    const editorTempPassword = generateTempPassword();
     editor = await User.create({
       name: "Content Editor",
       email: "editor@studentlifehungary.com",
-      password: "ChangeMe123!",
+      password: editorTempPassword,
       role: "editor",
       isEmailVerified: true,
     });
+    console.log(`Created editor user: editor@studentlifehungary.com / ${editorTempPassword}`);
   }
 
   // --- Categories ---

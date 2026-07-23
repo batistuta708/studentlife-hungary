@@ -1,8 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  poweredByHeader: false,
+  poweredByHeader: false, // don't advertise "X-Powered-By: Next.js" — no functional benefit, minor recon info for attackers
   compiler: {
+    // Strips console.log/console.debug from production builds automatically —
+    // keeps console.error/warn so real runtime errors are still visible in the
+    // browser console if something does go wrong live.
     removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
   },
   images: {

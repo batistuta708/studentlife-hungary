@@ -50,7 +50,7 @@ export function Header() {
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
           </button>
 
-         {isAuthenticated ? (
+          {isAuthenticated ? (
             <>
               {user && ["editor", "admin"].includes(user.role) && (
                 <Link href="/admin" className="text-sm font-medium text-brand-blue">
