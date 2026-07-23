@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  poweredByHeader: false,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
+  },
   images: {
     // Cloudinary-hosted images (listings, avatars, blog covers) — remotePatterns keeps
     // next/image's optimization/CDN pipeline working for externally-hosted assets.

@@ -1,9 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
+import dynamic from "next/dynamic";
 import { adminApi } from "@/lib/api/admin";
 import { Card } from "@/components/ui/Card";
+import type { ChartPoint } from "@/components/admin/EventsChart";
+
+// ssr:false is required (Recharts measures the DOM to size itself and can't render
+// server-side), and it also means Recharts' JS is a separate chunk fetched only when
+// this section actually mounts — the stat cards above render immediately without
+// waiting on it.
+const EventsChart = dynamic(() => import("@/components/admin/EventsChart").then((m) => m.EventsChart), {
+  ssr: false,
+  loading: () => <div className="flex h-72 items-center justify-center text-sm text-slate-400">Loading chart...</div>,
+});
 
 interface Summary {
   counts: Record<string, number>;
@@ -32,11 +42,8 @@ export default function AdminDashboardPage() {
 
   if (!summary) return <p className="text-sm text-slate-400">Loading dashboard...</p>;
 
-  // Collapse the per-eventType breakdown into a per-day total for a simple bar chart —
-  // the raw breakdown is still available in `summary.eventsPerDay` for a more detailed
-  // view later if needed.
-  const chartData = Object.values(
-    summary.eventsPerDay.reduce<Record<string, { date: string; events: number }>>((acc, e) => {
+  const chartData: ChartPoint[] = Object.values(
+    summary.eventsPerDay.reduce<Record<string, ChartPoint>>((acc, e) => {
       const date = e._id.date;
       acc[date] = acc[date] || { date, events: 0 };
       acc[date].events += e.count;
@@ -60,15 +67,7 @@ export default function AdminDashboardPage() {
       <Card className="mt-8">
         <p className="font-semibold">Events — last 30 days</p>
         <div className="mt-4 h-72">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-              <XAxis dataKey="date" tick={{ fontSize: 11 }} />
-              <YAxis tick={{ fontSize: 11 }} allowDecimals={false} />
-              <Tooltip />
-              <Bar dataKey="events" fill="#2563eb" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+          <EventsChart data={chartData} />
         </div>
       </Card>
 
