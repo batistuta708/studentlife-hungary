@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Card } from "@/components/ui/Card";
+import { BookmarkButton } from "@/components/shared/BookmarkButton";
 import { Badge } from "@/components/ui/Badge";
 import { jobsApi } from "@/lib/api/jobs";
 
@@ -81,7 +82,10 @@ export default async function JobsPage({ searchParams }: Props) {
                     {job.location.isRemote && " · Remote"}
                   </p>
                 </div>
-                <Badge variant="blue">{job.employmentType.replace("-", " ")}</Badge>
+                <div className="flex items-center gap-2">
+          <Badge variant="blue">{job.employmentType.replace("-", " ")}</Badge>
+          <BookmarkButton targetType="Job" targetId={job._id} />
+        </div>
               </div>
               {job.salary?.min && (
                 <p className="mt-3 text-sm font-medium text-brand-orange">

@@ -5,6 +5,7 @@ import { Home, MapPin, Users, Calendar } from "lucide-react";
 import { accommodationApi } from "@/lib/api/accommodation";
 import { Badge } from "@/components/ui/Badge";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
+import { BookmarkButton } from "@/components/shared/BookmarkButton";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -42,7 +43,10 @@ export default async function AccommodationDetailPage({ params }: Props) {
 
       <div className="flex items-start justify-between gap-4">
         <h1 className="text-2xl font-bold sm:text-3xl">{listing.title}</h1>
-        <Badge variant="blue">{listing.type.replace("-", " ")}</Badge>
+        <div className="flex items-center gap-2">
+          <Badge variant="blue">{listing.type.replace("-", " ")}</Badge>
+          <BookmarkButton targetType="Accommodation" targetId={listing._id} />
+        </div>
       </div>
 
       <div className="mt-4 flex flex-wrap gap-4 text-sm text-slate-500 dark:text-slate-400">

@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/Badge";
 import { LikeButton } from "@/components/blog/LikeButton";
 import { CommentSection } from "@/components/blog/CommentSection";
 import { ShareButtons } from "@/components/blog/ShareButtons";
+import { BookmarkButton } from "@/components/shared/BookmarkButton";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { articleJsonLd } from "@/lib/seo/structuredData";
 
@@ -105,7 +106,10 @@ export default async function ArticleDetailPage({ params }: Props) {
 
       <div className="mt-8 flex items-center justify-between border-y border-slate-200 py-4 dark:border-slate-800">
         <LikeButton articleId={article._id} initialLikesCount={article.likesCount} />
-        <ShareButtons title={article.title} />
+        <div className="flex gap-2">
+          <BookmarkButton targetType="Article" targetId={article._id} />
+          <ShareButtons title={article.title} />
+        </div>
       </div>
 
       <CommentSection targetType="Article" targetId={article._id} />
