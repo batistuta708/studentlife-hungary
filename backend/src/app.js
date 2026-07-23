@@ -25,7 +25,7 @@ const app = express();
 // (trusting only 1 hop still crashed in production), and since nothing can reach this
 // app except through Render's own proxy layer, there's no spoofing risk in trusting
 // the full chain here.
-app.set("trust proxy", true);
+app.set("trust proxy", 1);;
 
 // --- Security headers ---
 app.use(helmet());
