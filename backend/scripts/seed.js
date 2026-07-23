@@ -225,6 +225,49 @@ async function seed() {
       status: "published",
       publishedAt: new Date(),
     },
+    {
+      title: "Getting Around Budapest: A Public Transport Guide for Students",
+      excerpt: "Everything you need to know about metros, trams, buses, and student discounts in Hungary's capital.",
+      content:
+        "<p>Budapest has one of the most extensive and affordable public transport networks in Central Europe, run by BKK. As a student, this is one of the best deals you'll get in the city — a discounted monthly pass costs a fraction of what you'd pay in most Western European capitals.</p><h2>The network</h2><p>Four metro lines (M1 through M4) form the backbone of the system, complemented by an extensive tram network — Budapest's trams are famous for running right along the Danube, making the daily commute genuinely scenic. Buses and trolleybuses fill in the gaps, and night buses keep running after the metro closes.</p><h2>Getting your student pass</h2><p>Once your Hungarian student ID (diákigazolvány) is issued, you can apply for a discounted monthly pass at any BKK customer center. Bring your student ID and a passport photo. The discount is substantial — often 90% off the regular monthly pass price for students under 26.</p><h2>Practical tips</h2><p>Validate every ticket before boarding if you're not using a pass — ticket inspectors do checks regularly and fines are steep. Google Maps and the BKK's own app (BudapestGO) both give accurate real-time departures, which is genuinely useful given how often trams run.</p>",
+      coverImage: {
+        url: "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+        alt: "Budapest tram along the Danube",
+      },
+      categories: [categories["Student Life"]._id],
+      tags: ["transport", "budapest", "budget"],
+      status: "published",
+      publishedAt: new Date(),
+    },
+    {
+      title: "Finding a Part-Time Job as an International Student in Hungary",
+      excerpt: "Work permit rules, where to look, and what to expect from part-time work while studying.",
+      content:
+        "<p>Balancing part-time work with your studies is common in Hungary, but the rules differ depending on whether you're an EU/EEA citizen or not — worth getting straight before you start applying.</p><h2>Work permit basics</h2><p>EU/EEA students can work under the same conditions as Hungarian citizens, no separate permit needed. Non-EU students on a study residence permit can generally work part-time during term (commonly up to 24 hours a week) and more broadly during official university breaks — but the exact limit is tied to your specific permit, so check with your university's international office before accepting a role.</p><h2>Where to look</h2><p>Hospitality (cafés, restaurants) and tutoring are the two most accessible categories for students without fluent Hungarian, since many roles are English-friendly, especially in Budapest's university districts. University career centers and international-student Facebook groups are also worth checking — a lot of part-time roles circulate there before they're posted anywhere more formal.</p><h2>Before you accept anything</h2><p>Always confirm a listing is legitimate before sharing personal documents, and make sure any role complies with your specific permit's working-hours limit — working beyond what your permit allows can jeopardize your residence status.</p>",
+      coverImage: {
+        url: "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+        alt: "Student working part-time at a cafe",
+      },
+      categories: [categories["Student Life"]._id],
+      tags: ["jobs", "work-permit", "part-time"],
+      status: "published",
+      publishedAt: new Date(),
+      isFeatured: true,
+    },
+    {
+      title: "Budgeting as a Student: Real Costs of Living in Hungary",
+      excerpt: "A realistic breakdown of monthly expenses for international students across Hungarian cities.",
+      content:
+        "<p>Hungary remains one of the more affordable EU countries to study in, but costs vary a lot depending on which city you're in — Budapest is noticeably pricier than Szeged, Debrecen, or Pécs.</p><h2>The big three: rent, food, transport</h2><p>Rent is by far your largest expense and the one with the widest range — a dormitory room costs far less than a private studio, and splitting a shared apartment with roommates cuts the cost further still. Groceries are reasonably priced if you cook rather than eat out regularly; a student who cooks most meals typically spends noticeably less than one relying on restaurants and delivery. A discounted student transport pass, once you have your student ID, is a genuinely small monthly cost relative to everything else.</p><h2>Costs that catch people off guard</h2><p>Health insurance (mandatory for most non-EU students), one-time setup costs when you first arrive (deposit for accommodation, initial furnishing if unfurnished, a local SIM card), and the residence permit application fee are all worth budgeting for specifically rather than lumping into a vague 'monthly' estimate, since they hit hardest in your first month.</p><p>Use our <a href=\"/cost-of-living\">Cost of Living Calculator</a> to get a rough monthly estimate based on your specific city and living situation.</p>",
+      coverImage: {
+        url: "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+        alt: "Student budgeting with calculator and notebook",
+      },
+      categories: [categories["Student Life"]._id],
+      tags: ["budgeting", "cost-of-living", "finance"],
+      status: "published",
+      publishedAt: new Date(),
+    },
   ];
   for (const def of articleDefs) {
     const exists = await Article.findOne({ title: def.title });

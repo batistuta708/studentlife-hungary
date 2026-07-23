@@ -16,13 +16,11 @@ const statusVariant: Record<Article["status"], "warning" | "success" | "danger" 
   archived: "neutral",
 };
 
-// Demonstrates the full "content editor" pattern (image upload + form + status control)
-// that Accommodation, Universities, and Scholarships admin forms all replicate with
-// their own fields — this is the one built out in full for Phase 6.
 export default function ManageArticlesPage() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
@@ -40,26 +38,46 @@ export default function ManageArticlesPage() {
     load();
   };
 
-  const handleCreate = async (e: React.FormEvent) => {
+  const resetForm = () => {
+    setEditingId(null);
+    setTitle("");
+    setExcerpt("");
+    setContent("");
+    setCover(null);
+  };
+
+  const startEdit = (a: Article) => {
+    setEditingId(a._id);
+    setTitle(a.title);
+    setExcerpt(a.excerpt);
+    setContent(a.content);
+    setCover({ url: a.coverImage.url, publicId: "" });
+    setShowForm(true);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!cover) return;
     setSaving(true);
     try {
-      await articlesApi.create({
-        title,
-        excerpt,
-        content,
-        coverImage: { url: cover.url, alt: title },
-      });
-      setTitle("");
-      setExcerpt("");
-      setContent("");
-      setCover(null);
+      const payload = { title, excerpt, content, coverImage: { url: cover.url, alt: title } };
+      if (editingId) {
+        await articlesApi.update(editingId, payload);
+      } else {
+        await articlesApi.create(payload);
+      }
+      resetForm();
       setShowForm(false);
       load();
     } finally {
       setSaving(false);
     }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Delete this article? This cannot be undone.")) return;
+    await articlesApi.remove(id);
+    load();
   };
 
   const columns: Column<Article>[] = [
@@ -73,11 +91,18 @@ export default function ManageArticlesPage() {
     <div>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Manage Articles</h1>
-        <Button onClick={() => setShowForm((s) => !s)}>{showForm ? "Cancel" : "New Article"}</Button>
+        <Button
+          onClick={() => {
+            resetForm();
+            setShowForm((s) => !s);
+          }}
+        >
+          {showForm ? "Cancel" : "New Article"}
+        </Button>
       </div>
 
       {showForm && (
-        <form onSubmit={handleCreate} className="card mt-6 space-y-4 p-6">
+        <form onSubmit={handleSubmit} className="card mt-6 space-y-4 p-6">
           <div>
             <label className="text-sm font-medium">Cover image</label>
             <div className="mt-1 max-w-md">
@@ -97,7 +122,7 @@ export default function ManageArticlesPage() {
             <textarea value={content} onChange={(e) => setContent(e.target.value)} className="input mt-1 min-h-[200px]" required />
           </div>
           <Button type="submit" isLoading={saving}>
-            Save as Draft
+            {editingId ? "Save changes" : "Save as Draft"}
           </Button>
         </form>
       )}
@@ -109,7 +134,10 @@ export default function ManageArticlesPage() {
           loading={loading}
           rowKey={(a) => a._id}
           actions={(a) => (
-            <div className="flex justify-end gap-2">
+            <div className="flex flex-wrap justify-end gap-2">
+              <button onClick={() => startEdit(a)} className="text-xs font-medium text-brand-blue">
+                Edit
+              </button>
               {a.status !== "published" && (
                 <button onClick={() => handleStatus(a._id, "published")} className="text-xs font-medium text-emerald-600">
                   Publish
@@ -120,6 +148,9 @@ export default function ManageArticlesPage() {
                   Archive
                 </button>
               )}
+              <button onClick={() => handleDelete(a._id)} className="text-xs font-medium text-rose-600">
+                Delete
+              </button>
             </div>
           )}
         />
