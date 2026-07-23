@@ -50,11 +50,18 @@ export function Header() {
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
           </button>
 
-          {isAuthenticated ? (
-            <Link href="/dashboard" className="flex items-center gap-2 text-sm font-medium">
-              <UserIcon size={18} />
-              {user?.name?.split(" ")[0]}
-            </Link>
+         {isAuthenticated ? (
+            <>
+              {user && ["editor", "admin"].includes(user.role) && (
+                <Link href="/admin" className="text-sm font-medium text-brand-blue">
+                  Admin Panel
+                </Link>
+              )}
+              <Link href="/dashboard" className="flex items-center gap-2 text-sm font-medium">
+                <UserIcon size={18} />
+                {user?.name?.split(" ")[0]}
+              </Link>
+            </>
           ) : (
             <>
               <Link href="/login" className="text-sm font-medium text-slate-600 dark:text-slate-300">

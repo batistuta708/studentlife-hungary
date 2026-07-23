@@ -47,19 +47,19 @@ export function useAuth() {
   const router = useRouter();
   const { user, isAuthenticated, setSession, clearSession } = useAuthStore();
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string, redirectTo = "/dashboard") => {
     const { data } = await authApi.login({ email, password });
     setSession(data.user, data.accessToken);
-    router.push("/dashboard");
+    router.push(redirectTo);
   };
 
-  const register = async (name: string, email: string, password: string) => {
+  const register = async (name: string, email: string, password: string, redirectTo = "/dashboard") => {
     const { data } = await authApi.register({ name, email, password });
     setSession(data.user, data.accessToken);
-    router.push("/dashboard");
+    router.push(redirectTo);
   };
 
-  const logout = async () => {
+  const logout = async (redirectTo = "/") => {
     await authApi.logout().catch(() => null);
     clearSession();
     router.push("/");
