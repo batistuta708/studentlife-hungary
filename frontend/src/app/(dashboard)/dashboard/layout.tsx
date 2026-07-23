@@ -8,11 +8,12 @@ import { useAuth } from "@/lib/hooks/useAuth";
 
 const links = [
   { href: "/dashboard", label: "Overview", icon: User },
-  { href: "/dashboard/profile", label: "Profile", icon: Settings },
+  { href: "/dashboard/profile", label: "Profile", icon: User },
   { href: "/dashboard/bookmarks", label: "Bookmarks", icon: Bookmark },
   { href: "/dashboard/saved-articles", label: "Saved Articles", icon: Newspaper },
   { href: "/dashboard/saved-jobs", label: "Saved Jobs", icon: Briefcase },
   { href: "/dashboard/saved-accommodation", label: "Saved Housing", icon: HomeIcon },
+  { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 
 // Client-side guard: redirects unauthenticated visitors to /login. Paired with
